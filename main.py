@@ -16,6 +16,3 @@ if __name__ == "__main__":
 
     # 4. 남은 컬럼(준식별자, 민감정보)에 적용할 가명처리 선택
     pseudonymizes = Pseudonymize_Selector.select(dataframe.columns)
-
-    
-git remote set-url origin https://{jaehyeok34}:{token}@github.com/jaehyeok34/capstone.git
