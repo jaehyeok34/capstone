@@ -18,3 +18,4 @@ if __name__ == "__main__":
     pseudonymizes = Pseudonymize_Selector.select(dataframe.columns)
 
     
+git remote set-url origin https://{jaehyeok34}:{token}@github.com/jaehyeok34/capstone.git
