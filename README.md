@@ -14,55 +14,88 @@
 
 ## 가명처리 기법 설명
 * 일반삭제: 컬럼 자체를 삭제
-    - **before**
-    - name, ssn, address, ...
-    - **일반삭제(ssn)**
-    - **after**
-    - name, address, ...
+**Before**
+     name  age    city
+0   Alice   25   Seoul
+1     Bob   30   Busan
+2  Charlie   35  Incheon
+3    David   40   Daegu
+**After (컬럼 "age"와 "city" 삭제)**
+     name
+0   Alice
+1     Bob
+2  Charlie
+3    David
 
 * 부분삭제: 컬럼의 특정 인덱스 데이터의 일부를 삭제
-    - **before**
-    - 1 alice, 10, ...
-    - 2 john, 20, ...
-    - **부분삭제(name, [3, 4])**
-    - **after**
-    - 1 ali, 10, ...
-    - 2 joh, 20, ...
+**Before**
+     name    age    city
+0   Alice   12345   Seoul
+1     Bob   67890   Busan
+2  Charlie  54321  Incheon
+3    David  98765   Daegu
+**After (컬럼 "age"에서 인덱스 1~2의 부분 삭제: 범위 [1, 3])**
+     name    age    city
+0   Alice   1***   Seoul
+1     Bob   6***   Busan
+2  Charlie  5***   Incheon
+3    David  9***   Daegu
 
 * 행 항목 삭제: 컬럼의 특정 행을 삭제
-    - **before**
-    - 1 alice, 10
-    - 2 bob, 12
-    - 3 john, 21
-    - **행 항목 삭제([1, 3])**
-    - **after**
-    - 1 bob, 12
-
+**Before**
+     name    age    city
+0   Alice   25   Seoul
+1     Bob   30   Busan
+2  Charlie   35  Incheon
+3    David   40   Daegu
+**After (인덱스 1과 3 삭제)**
+     name    age    city
+0   Alice   25   Seoul
+2  Charlie   35  Incheon
 
 * 로컬삭제: 컬럼의 특정 인덱스 값 삭제
-    - **before**
-    - 1 alice, 10, ...
-    - 2 bob, 12, ...
-    - 3 john, 21, ...
-    - **로컬삭제(name, [1, 3])**
-    - **after**
-    - 1 "", 10, ...
-    - 2 bob, 12, ...
-    - 3 "", 21, ...
+**Before**
+     name    age    city
+0   Alice   25   Seoul
+1     Bob   30   Busan
+2  Charlie   35  Incheon
+3    David   40   Daegu
+**After (컬럼 "name"에서 인덱스 1과 3 삭제)**
+     name    age    city
+0   Alice   25   Seoul
+1           30   Busan
+2  Charlie   35  Incheon
+3           40   Daegu
 
 * 마스킹: 컬럼 데이터에 마스킹 적용
-    - **before**
-    - 1 alice, 10, ...
-    - 2 bob, 12, ...
-    - **마스킹(name, [1, 3])**
-    - **after**
-    - 1 bob, 12, ...
+**Before**
+     name      age      city
+0   Alice   12345    Seoul
+1     Bob   67890    Busan
+2  Charlie  54321   Incheon
+3    David  98765    Daegu
+**After (컬럼 "age"에서 인덱스 1~3을 마스킹)**
+     name      age      city
+0   Alice   12345    Seoul
+1     Bob   *****    Busan
+2  Charlie  *****   Incheon
+3    David  *****    Daegu
 
 * 주소: 도/시 기준으로 주소를 좁힘
-    - **before**
-    - 1 alice, 대전광역시 유성구 학하동
-    - **주소(address, 1)**(1: 도 단위, 2: 시 단위)
-    - 1 alice, 대전광역시
+**Before**
+     address
+0   Seoul Gangnam
+1   Busan Haeundae
+2   Incheon Yeonsu
+3   Daegu Dalseo
+**After (도 단위까지 삭제 - mode=1)**
+     address
+0   Seoul
+1   Busan
+2   Incheon
+3   Daegu
+
+
 
 
 {
