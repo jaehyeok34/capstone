@@ -25,20 +25,20 @@ name
 
 **Before**
 ```
-name     age      city
+name     income      city
 0   Alice   12345   Seoul
 1   Bob     67890   Busan
 2   Charlie 54321   Incheon
 3   David   98765   Daegu
 ```
 
-**After** (컬럼 "age"에서 인덱스 1~2의 부분 삭제: 범위 [1, 3])
+**After** (컬럼 "income" 부분 삭제: 범위 [1, 4])
 ```
-name     age    city
-0   Alice   1***   Seoul
-1   Bob     6***   Busan
-2   Charlie 5***   Incheon
-3   David   9***   Daegu
+name     income    city
+0   Alice   1   Seoul
+1   Bob     6   Busan
+2   Charlie 5   Incheon
+3   David   9   Daegu
 ```
 
 ---
@@ -89,20 +89,20 @@ name     age    city
 
 **Before**
 ```
-name     age      city
+name     income      city
 0   Alice   12345   Seoul
 1   Bob     67890   Busan
 2   Charlie 54321   Incheon
 3   David   98765   Daegu
 ```
 
-**After** (컬럼 "age"에서 인덱스 1~3을 마스킹)
+**After** (컬럼 "income"에서 범위 1~3을 마스킹)
 ```
-name     age    city
-0   Alice   12345   Seoul
-1   Bob     *****   Busan
-2   Charlie *****   Incheon
-3   David   *****   Daegu
+name     income    city
+0   Alice   1***5   Seoul
+1   Bob     6***0   Busan
+2   Charlie 5***1   Incheon
+3   David   9***5   Daegu
 ```
 
 ---
