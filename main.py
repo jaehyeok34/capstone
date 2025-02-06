@@ -16,3 +16,8 @@ if __name__ == "__main__":
 
     # 4. 남은 컬럼(준식별자, 민감정보)에 적용할 가명처리 선택
     pseudonymizes = Pseudonymize_Selector.select(dataframe.columns)
+    
+    # 5. 가명처리 적용
+    # TODO: 가명처리 적용 기능 구현
+    # 레벨별로 가명처리 적용
+    
