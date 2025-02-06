@@ -1,4 +1,5 @@
-from suppressions import Suppressions
+from old.suppressions import Suppressions
+from typing import Tuple, List, Callable
 
 class Selector:
     pseudo_dict = {
@@ -6,7 +7,11 @@ class Selector:
             "general": ("suppression-general", Suppressions.general),
             "partial": ("suppression-partial", Suppressions.partial),
             "record": ("suppression-record", Suppressions.record),
+            "local": ("suppression-local", Suppressions.local),
+            "masking": ("suppression-masking", Suppressions.masking),
+            "address": ("suppression-address", Suppressions.address),
         }
+        
         # "Suppression": ["general", "partial", "record", "sup_local", "masking", "address"], # 삭제 기법
         # "Rounding": ["off", "up", "down", "random"], # 라운딩 기법
         # "Generalization": ["gen_local", "categorizion"], # 범주화 기법
@@ -16,7 +21,7 @@ class Selector:
 
 
     @classmethod
-    def run(cls, columns: list, columns_dict: dict[str, list]):
+    def run(cls, columns: List, columns_dict: dict[str, List[Tuple[str, Callable]]]) -> None:
         actions = {
             "추가": cls.__append,
             "제거": cls.__remove,
@@ -35,51 +40,49 @@ class Selector:
     
 
     @classmethod
-    def __append(cls, columns: list, columns_dict: dict[str, list]) -> None:
-        print("가명처리 적용 컬럼 선택")
+    def __append(cls, columns: list, columns_dict: dict[str, List[Tuple[str, Callable]]]) -> None:
+        print("-----가명처리 적용 컬럼 선택-----")
         selected_column = cls.__select_column(columns)
 
-        print("가명처리 기법 선택(중분류)")
-        selected_middle = cls.__select_middle()
+        print("-----가명처리 기법 선택(중분류)-----")
+        selected_middle = cls.__select_middle() # 중분류 key 값
         
-        print("가명처리 기법 선택(소분류)")
-        selected_small = cls.__select_small(selected_middle)
+        print("-----가명처리 기법 선택(소분류)-----")
+        selected_small = cls.__select_small(selected_middle) # 소분류 key 값
 
-        # 중복된 값이 있는지 확인
-        if selected_small in columns_dict[selected_column]:
+        selected_pseudo: Tuple[str, Callable] = cls.pseudo_dict[selected_middle][selected_small] # 선택된 가명처리 기법(튜플)
+        if selected_pseudo[0] in [v[0] for v in columns_dict[selected_column]]: # 튜플 중 첫 번째(가명처리 기법 이름)가 이미 존재하는지 확인
             print(f"{selected_column} 컬럼에 이미 {selected_small} 가명처리 기법이 적용되어 있습니다.")
             return
 
         # 가명처리 기법 추가
-        columns_dict[selected_column].append(selected_small)
+        columns_dict[selected_column].append(selected_pseudo)
 
 
     @classmethod
-    def __remove(cls, columns: list, columns_dict: dict[str, list]) -> None:
-        print("가명처리 제거 컬럼 선택")
+    def __remove(cls, columns: list, columns_dict: dict[str, List[Tuple[str, Callable]]]) -> None:
+        print("-----가명처리 제거 컬럼 선택-----")
         selected_column = cls.__select_column(columns)
 
-        if not columns_dict[selected_column]:
+        if not columns_dict[selected_column]: # 가명처리 기법이 존재하지 않을 때(리스트가 비어 있을 때)
             print(f"{selected_column} 컬럼에 적용된 가명처리 기법이 없습니다.")
             return
 
         print("제거할 가명처리 기법 선택")
-        selected_small = cls.__select_option(columns_dict[selected_column], "소분류")
+        selected_small = cls.__select_option([v[0] for v in columns_dict[selected_column]], "소분류")
 
-        # 가명처리 기법 제거
-        columns_dict[selected_column].remove(selected_small)
+        # 가명처리 기법 제거(튜플 중 첫 번째(가명처리 기법 이름)가 선택된 가명처리 기법과 같은 것을 제외한 새로운 리스트 생성)
+        columns_dict[selected_column] = [pseudo for pseudo in columns_dict[selected_column] if pseudo[0] != selected_small]
 
 
     @classmethod
-    def __search(cls, columns: list, columns_dict: dict[str, list]) -> None:
-        for column, techniques in columns_dict.items():
-            print(f"{column}: ", end="")
-            if techniques:
-                print(f"{', '.join(techniques)}")
+    def __search(cls, columns: list, columns_dict: dict[str, List[Tuple[str, Callable]]]) -> None:
+        for key, value in columns_dict.items():
+            print(f"{key}: ", end="")
+            if value:
+                print(f"{', '.join([pseudo[0] for pseudo in value])}") # Tuple의 첫 번째 요소(가명처리 기법 이름)만 출력
             else:
                 print("None")
-
-        print(columns_dict)
 
 
     @classmethod
