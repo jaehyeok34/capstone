@@ -3,16 +3,9 @@ from typing import Dict, List
 
 
 class Pseudonymize_Selector:
+    
     @classmethod
-    def __get_pseudonymize(cls) -> Dict[str, List[str]]:
-        with open("resources/pseudonymize.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-        
-
-    @classmethod
-    def select(cls, columns: List[str]) -> Dict[str, str]:
-        pseudonymizes = cls.__get_pseudonymize()
-
+    def select(cls, pseudonymizes: Dict[str, List[str]], columns: List[str]) -> Dict[str, str]:
         print("가명처리 기법 목록")
         for key, value in pseudonymizes.items():
             print(f"{key}: {", ".join(value)}")
