@@ -7,7 +7,7 @@ df = pd.read_csv("resources/datas.csv")
 with open("resources/pseudonymize.json", "r", encoding="utf-8") as f:
     pseudonymizes = json.load(f)
 
-sup = Sup(pseudonymizes, df)
+sup = Sup(df)
 
 def test_general():
     print()
@@ -18,6 +18,18 @@ def test_general():
 def test_partial():
     print()
     sup.partial(["name", "ssn"])
+    print(df.head(3))
+
+
+def test_record():
+    print()
+    sup.record()
+    print(df.head(3))
+
+
+def test_local():
+    print()
+    sup.local(["name", "ssn"])
     print(df.head(3))
 
 

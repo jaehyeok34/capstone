@@ -6,7 +6,6 @@ from pseudonymizes.abc_pseudonymize import ABC_Pseudonymize
 
 
 class Suppression(ABC_Pseudonymize):
-    # def __init__(self, pseudonymizes: List[str], df: pd.DataFrame):
     def __init__(self, df: pd.DataFrame):
         self.df = df
         self.__table: Dict[str, Callable[[List[str]], None]] = {
@@ -54,13 +53,15 @@ class Suppression(ABC_Pseudonymize):
             scope = Suppression.__get_scope(f"{column} 부분삭제")
             sup.partial(column, scope)
 
-    def record(self, columns: List[str]) -> None:
+
+    def record(self, _: List[str] = None) -> None:
         """
         행 항목 삭제
-
-        Args:
-            columns (List[str]): 행 항목 삭제를 적용할 컬럼 리스트
         """
+
+        indexes = Suppression.__get_indexes("행 항목 삭제")
+        DIL.Suppression(self.df).record(indexes)
+        
 
 
     def local(self, columns: List[str]) -> None:
@@ -70,6 +71,10 @@ class Suppression(ABC_Pseudonymize):
         Args:
             columns (List[str]): 로컬삭제를 적용할 컬럼 리스트
         """
+        sup = DIL.Suppression(self.df)
+        for column in columns:
+            indexes = Suppression.__get_indexes(f"{column}에 로컬삭제")
+            sup.local(column, indexes)
 
 
     def masking(self, columns: List[str]) -> None:
@@ -125,3 +130,19 @@ class Suppression(ABC_Pseudonymize):
 
         return [start, end]
             
+    
+    @staticmethod
+    def __get_indexes(option: str = "가명처리") -> List[int]:
+        while True:
+            try:
+                indexes = input(f"{option}을/를 적용할 인덱스를 입력하세요 (예. 1, 2, 3) > ")
+                index_list = list(map(int, indexes.split(", ")))
+                if any(index < 0 for index in index_list):
+                    raise ValueError
+                
+                break
+
+            except ValueError:
+                print("잘못된 입력입니다. 다시 입력해 주세요.")
+
+        return index_list
