@@ -3,6 +3,7 @@ import DIL
 import pandas as pd
 
 from pseudonymizes.abc_pseudonymize import ABC_Pseudonymize
+from utils.util import Util
 
 
 class Suppression(ABC_Pseudonymize):
@@ -50,7 +51,7 @@ class Suppression(ABC_Pseudonymize):
 
         sup = DIL.Suppression(self.df)
         for column in columns:
-            scope = Suppression.__get_scope(f"{column} 부분삭제")
+            scope = Util.get_scope(f"{column} 부분삭제")
             sup.partial(column, scope)
 
 
@@ -59,7 +60,7 @@ class Suppression(ABC_Pseudonymize):
         행 항목 삭제
         """
 
-        indexes = Suppression.__get_indexes("행 항목 삭제")
+        indexes = Util.get_indexes("행 항목 삭제")
         DIL.Suppression(self.df).record(indexes)
         
 
@@ -73,7 +74,7 @@ class Suppression(ABC_Pseudonymize):
         """
         sup = DIL.Suppression(self.df)
         for column in columns:
-            indexes = Suppression.__get_indexes(f"{column}에 로컬삭제")
+            indexes = Util.get_indexes(f"{column}에 로컬삭제")
             sup.local(column, indexes)
 
 
@@ -87,7 +88,7 @@ class Suppression(ABC_Pseudonymize):
 
         sup = DIL.Suppression(self.df)
         for column in columns:
-            scope = Suppression.__get_scope(f"{column} 마스킹")
+            scope = Util.get_scope(f"{column} 마스킹")
             sup.masking(column, scope)            
 
     
@@ -112,37 +113,3 @@ class Suppression(ABC_Pseudonymize):
                     print("잘못된 입력입니다. 다시 입력해 주세요.")
 
             DIL.Suppression(self.df).address(column, choice) 
-
-
-    @staticmethod
-    def __get_scope(option: str) -> List[int]:
-        while True:
-            try:
-                scope = input(f"{option} 범위 입력(예. 1, 5) > ")
-                start, end = map(int, scope.split(", "))
-                if (start < 0) or (end < 0) or (start >= end):
-                    raise ValueError
-                
-                break
-
-            except ValueError:
-                print("잘못된 입력입니다. 다시 입력해 주세요.")
-
-        return [start, end]
-            
-    
-    @staticmethod
-    def __get_indexes(option: str = "가명처리") -> List[int]:
-        while True:
-            try:
-                indexes = input(f"{option}을/를 적용할 인덱스를 입력하세요 (예. 1, 2, 3) > ")
-                index_list = list(map(int, indexes.split(", ")))
-                if any(index < 0 for index in index_list):
-                    raise ValueError
-                
-                break
-
-            except ValueError:
-                print("잘못된 입력입니다. 다시 입력해 주세요.")
-
-        return index_list

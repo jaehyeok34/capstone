@@ -26,7 +26,7 @@ class Generalization(ABC_Pseudonymize):
         # print(f"[Debug] {pseudonymize} 적용 완료")
 
 
-    # "랜덤 라운딩", "로컬 일반화", "문자데이터 범주화"
+    # "로컬 일반화", "문자데이터 범주화"
     def random_rounding(self, columns: List[str]) -> None:
         """
         랜덤 라운딩
