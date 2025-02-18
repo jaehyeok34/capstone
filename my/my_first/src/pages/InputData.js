@@ -38,15 +38,17 @@ const InputData = () => {
             return;
         }
         const formData = new FormData();
-        formData.append("file", file);
-        formData.append("option", option);
+        formData.append("files", file);
+        // formData.append("option", option);
 
         try {
-            const response = await fetch("http://localhost:8080/upload", {
+            console.log("전송 시도");
+            const response = await fetch("http://localhost:3401/file/upload", {
                 method: "POST",
                 body: formData,   
             });
-
+            
+            console.log("전송 완료");
             const result = await response.json();
             setMessage(result.message);
             console.log(result);
