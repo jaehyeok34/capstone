@@ -46,6 +46,7 @@ export class FileUploadService {
             // 각 파일을 Kafka 메시지 형식으로 변환
             // 메시지의 key 없이 라운드로빈 방식으로 전송
             const messages = files.map(file => ({
+                key: file.originalname,
                 value: JSON.stringify({
                     filename: file.originalname,
                     content: file.buffer.toString('base64')
