@@ -62,6 +62,9 @@ export class FileUploadService {
             // 전송 완료 후 프로듀서 연결을 종료합니다.
             await producer.disconnect();
         })();
+
+        const logger = new Logger(FileUploadService.name);
+        logger.log(`File uploaded successfully(saveKafka) - ${files.length} files`);
         
         return {
             message: "File uploaded successfully(saveKafka)",

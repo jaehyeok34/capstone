@@ -9,7 +9,7 @@ export class FileUploadController {
     @Post("upload")
     @UseInterceptors(FilesInterceptor("files"))
     uploadFile(@UploadedFiles() files: Array<Express.Multer.File>): object {
-        // return this.fileUploadService.saveLocal(files);
-        return this.fileUploadService.saveKafka(files);
+        return this.fileUploadService.saveLocal(files);
+        // return this.fileUploadService.saveKafka(files);
     }
 }
