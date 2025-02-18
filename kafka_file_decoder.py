@@ -18,27 +18,22 @@ consumer = KafkaConsumer(
     group_id='python_file_decoder'
 )
 
-# 메시지 수신 및 처리
 try:
     for message in consumer:
         try:
-            payload = message.value.decode('utf-8')
-            data = json.loads(payload)
-            filename = data.get('filename', 'output_file')
-            filedata = data.get('filedata', '')
-            if not filedata:
-                print("filedata 필드가 없습니다.")
-                continue
-
-            # base64 디코딩
-            file_bytes = base64.b64decode(filedata)
+            filename = message.key.decode('utf-8') if message.key else 'output_file'
+            b64_string = message.value.decode('utf-8')
+            file_bytes = base64.b64decode(b64_string)
             file_path = os.path.join(output_dir, filename)
 
             with open(file_path, 'wb') as f:
                 f.write(file_bytes)
-            print(f"저장 완료: {file_path}")
+
+            print(f"Saved: {file_path}")
+
         except Exception as err:
-            print("메시지 처리 중 오류:", err)
+            print("Error processing message:", err)
+
 except KeyboardInterrupt:
-    print("소비 중단")
+    print("Consumer interrupted")
     sys.exit(0)
