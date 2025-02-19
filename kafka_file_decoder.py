@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import os
 import sys
 import json
@@ -11,15 +10,17 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 # KafkaConsumer 설정: 업로드 파일 토픽에서 데이터 수신
+
 consumer = KafkaConsumer(
     'upload_files',
     bootstrap_servers=['localhost:9092'],  # 브로커 주소 환경에 맞게 수정
     auto_offset_reset='earliest',  # 처음부터 읽기
-    group_id='python_file_decoder'
+    group_id='python_file_decoder2'
 )
 
+
 try:
-    for message in consumer:
+    for message in consumer: 
         try:
             filename = message.key.decode('utf-8') if message.key else 'output_file'
             b64_string = message.value.decode('utf-8')
