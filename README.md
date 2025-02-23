@@ -29,7 +29,8 @@
 ## Project setup
 
 ```bash
-$ npm install
+$ npm install -g @nestjs/cli
+$ npm install @nestjs/platform-express multer 
 ```
 
 ## Compile and run the project
