@@ -31,6 +31,7 @@
 ```bash
 $ npm install -g @nestjs/cli
 $ npm install @nestjs/platform-express multer 
+$ npm install -D @types/multer
 ```
 
 ## Compile and run the project
