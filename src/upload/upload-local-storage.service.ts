@@ -3,6 +3,7 @@ import { IStorage } from "./storage.interface";
 import * as fs from "fs";
 import { promisify } from "util";
 import * as path from "path";
+import * as os from "os";
 
 const writeFileAsync = promisify(fs.writeFile);
 
@@ -10,7 +11,8 @@ const writeFileAsync = promisify(fs.writeFile);
 export class UploadLocalStorageService implements IStorage {
 
     private logger = new Logger(UploadLocalStorageService.name); // for debug
-    private uploadPath = path.join(process.cwd(), 'uploads');
+    // private uploadPath = path.join(process.cwd(), 'uploads'); // 현재 프로젝트 기준
+    private uploadPath = path.join(os.homedir(), "Documents", "uploads"); // macOS 기준 "문서" 기준
 
     constructor() {
         if (!fs.existsSync(this.uploadPath)) {
