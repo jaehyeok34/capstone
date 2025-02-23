@@ -1,6 +1,7 @@
 import { Controller, Inject, Post, UploadedFiles, UseInterceptors } from "@nestjs/common";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { IStorage } from "./storage.interface";
+import { KafkaInterceptor } from "src/kafka";
 
 @Controller("upload")
 export class UploadController {
@@ -16,13 +17,8 @@ export class UploadController {
      * @returns 
      */
     @Post()
-    @UseInterceptors(FilesInterceptor("files"))
-    async uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>): Promise<object> {
-        const filePaths = await this.storageService.save(files);
-
-        return {
-            message: "파일 업로드 성공",
-            filePaths
-        }
+    @UseInterceptors(FilesInterceptor("files"), KafkaInterceptor)
+    async uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>): Promise<Array<string>> {
+        return await this.storageService.save(files);
     }
 }

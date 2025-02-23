@@ -7,5 +7,5 @@ export interface IStorage {
    * @param files Array<Express.Multer.File>
    * @returns 저장된 파일 경로 혹은 저장 결과
    */
-  save(files: Array<Express.Multer.File>): Promise<Array<String>>; 
+  save(files: Array<Express.Multer.File>): Promise<Array<string>>;
 }

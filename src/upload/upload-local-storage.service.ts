@@ -7,7 +7,7 @@ import * as path from "path";
 const writeFileAsync = promisify(fs.writeFile);
 
 @Injectable()
-export class UploadLocalStorageService implements IStorage{
+export class UploadLocalStorageService implements IStorage {
 
     private logger = new Logger(UploadLocalStorageService.name); // for debug
     private uploadPath = path.join(process.cwd(), 'uploads');
@@ -21,7 +21,7 @@ export class UploadLocalStorageService implements IStorage{
         }
     }
 
-    async save(files: Array<Express.Multer.File>): Promise<Array<String>> {
+    async save(files: Array<Express.Multer.File>): Promise<Array<string>> {
         // 파일(들)을 저장
         const filePaths = await Promise.all(
             files.map(async file => {
