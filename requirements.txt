@@ -1,0 +1,14 @@
+cffi==1.17.1
+cryptography==44.0.1
+DIL==0.0.3
+numpy==2.2.3
+pandas==2.2.3
+pip==25.0.1
+pycparser==2.22
+pycryptodome==3.11.0
+pyffx==0.3.0
+pyope==0.2.2
+python-dateutil==2.9.0.post0
+pytz==2025.1
+six==1.17.0
+tzdata==2025.1
