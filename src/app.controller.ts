@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -11,7 +11,10 @@ export class AppController {
   }
 
   @Get("/get-metadata")
-  getMetadata(): object {
+  async getMetadata(): Promise<object> {
+    const log = new Logger("getMetadata");
+    log.debug("getMetadata() called");
+
     return this.appService.getMetadata();
   }
 }
