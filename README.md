@@ -30,6 +30,7 @@
 
 ```bash
 $ npm install
+$ npm install class-validator class-transformer # for DTO
 ```
 
 ## Compile and run the project
