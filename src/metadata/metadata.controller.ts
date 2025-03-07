@@ -14,9 +14,16 @@ export class MetadataController {
         return this.metadataService.getInfo();
     }
 
+    @Get("get-random")
+    async getRandomMetadata(): Promise<Metadata> {
+        new Logger(`${MetadataController.name} - getMetadata`).debug("Getting metadata from the server");
+
+        return await this.metadataService.getRandomMetadatFromFileSystem();
+    }
+
     @Post("upload")
     @UsePipes(new ValidationPipe())
-    async uploadMetadata(@Body() metadata: Metadata): Promise<string> {
+    async uploadAndSaveToFile(@Body() metadata: Metadata): Promise<string> {
         new Logger(`${MetadataController.name} - uploadMetadata`).debug(metadata);
         await this.metadataService.saveMetadataToFile(metadata);
         
