@@ -4,7 +4,22 @@ import pandas as pd
 
 def process_file(file_path: str) -> None:
     try:
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path).copy()
+
+        # 식별자 삭제
+        identifier = [
+            '주민등록번호', '주민번호', 'ssn', 
+            '전화번호', '번호', 'phone_number', 'phone number', 
+            '이메일', 'email', 'e-mail'
+        ]
+
+        df.drop(columns=[col for col in identifier if col in df.columns], inplace=True)
+
+        # 준식별자 가명처리
+        
+
+        # 결과 출력(5개)
+        print(df.head(5))
         
     except pd.errors.ParserError as e:
         print(f"Error processing {file_path}: {e}")
