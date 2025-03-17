@@ -1,0 +1,12 @@
+{
+    "metadatas": [
+        {    
+            "imageName": "ubuntu:latest",
+            "containerName": "test-container",
+            "executionMode": "command",
+            "command": ["echo", "hello"],
+            "outputType": "csv",
+            "description": "echo hello"
+        }
+    ]
+}
