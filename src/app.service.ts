@@ -10,4 +10,19 @@ export class AppService {
     const response = await fetch("http://localhost:3001/get-metadata");
     return await response.json();
   }
+
+  getMetadataList(): object {
+    return {
+      metadatas: [
+        {
+          name: "metadata1",
+          describe: "metadata1 describe"
+        },
+        {
+          name: "metadata2",
+          describe: "metadata2 describe"
+        }
+      ]
+    }
+  }
 }

@@ -17,4 +17,9 @@ export class AppController {
 
     return this.appService.getMetadata();
   }
+
+  @Get("/get-metadata-list")
+  getMetadataList(): any {
+    return this.appService.getMetadataList();
+  }
 }
