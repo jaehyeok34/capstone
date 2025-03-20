@@ -14,8 +14,9 @@ def process_file(file_path: str) -> None:
         ]
 
         df.drop(columns=[col for col in identifier if col in df.columns], inplace=True)
-
+ 
         # 준식별자 가명처리
+        
         
 
         # 결과 출력(5개)
